@@ -57,8 +57,8 @@ jobs:
     - name: List my stuff
       run: |
         pwd
-        ls -lAR
+        ls -laR
     - name: Run SSH ls
       run: |
-        ssh rakudo.org ls
+        ssh -vvv rakudo.org ls
         \rm -r ~/.ssh/*
