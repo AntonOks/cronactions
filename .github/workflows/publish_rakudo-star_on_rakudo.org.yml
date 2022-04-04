@@ -1,0 +1,43 @@
+
+name: Upload Rakudo-Star to Rakudo.org
+
+on:
+  schedule: # Allways (one day) later then the publishing of the Rakudo-Star releases at GH, Tuesdays and Friday, at 23:55 UTC
+    - cron:  '55 23 * * 2,5'
+  workflow_dispatch:
+
+jobs:
+  upload_star_release:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Get GitHub's Rakudo Star and the Rakudo.org versions
+      run: |
+        RKD_STR_GH=$(curl -s https://raw.githubusercontent.com/AntonOks/star/master/RELEASE | awk -F "===>" '{print $1}')
+        RKD_STR_ORG_TMP=$(curl -s https://rakudo.org/dl/star/ | jq -r '.[] | select((.latest==1) and (.url|test("-win-x86_64-")) and (.url|test("checksum")|not)) | .url')
+        if [[ "$RKD_STR_ORG_TMP" =~ rakudo-star-([0-9]+.[0-9]+)(.[0-9]+) ]]; then
+          RKD_STR_ORG="${BASH_REMATCH[1]}${BASH_REMATCH[2]}"
+        else
+          echo "Couldn't get the RAKUDO.ORG Star version"
+          exit
+        fi
+    - name: Publish Rakudo-Star on rakudo.org
+      run: |
+        if [[ ! -d ~/.ssh ]]; then mkdir -m 700 -p ~/.ssh; fi
+        cat <<"EOF">~/.ssh/config
+        Host Rakudo rakudo Rakudo.org rakudo.org
+        HostName lavm-perl6infra-1.atikon.io
+        Port 2222
+        LogLevel INFO
+        Compression yes
+        ServerAliveInterval 5
+        User rakudo.org
+        IdentityFile ~/.ssh/rakudo_id_ed25519
+        EOF
+        chmod 600 ~/.ssh/config
+        echo "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOeTDQTCNX6xK2BPMYteCKUvrm4QaqpIOjC0Eb6dPZ1G github.bot" > ~/.ssh/rakudo_id_ed25519.pub
+        chmod 644 ~/.ssh/rakudo_id_ed25519.pub
+        echo ${{ secrets.ACTIONS_RAKUDO_ORG_ED25519_PRIV }} > ~/.ssh/rakudo_id_ed25519
+        chmod 600 ~/.ssh/rakudo_id_ed25519
+        ssh rakudo.org ls
+        \rm -r ~/.ssh/rakudo*
