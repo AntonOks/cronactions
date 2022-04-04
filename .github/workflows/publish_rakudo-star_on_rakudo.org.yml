@@ -43,7 +43,7 @@ jobs:
         chmod 644 ~/.ssh/rakudo_id_ed25519.pub
     - name: Prepare ssh private key file
       run: |
-        echo ${{ secrets.ACTIONS_RAKUDO_ORG_ED25519_PRIV }} > ~/.ssh/rakudo_id_ed25519
+        echo -e ${{ secrets.ACTIONS_RAKUDO_ORG_ED25519_PRIV }} > ~/.ssh/rakudo_id_ed25519
         chmod 600 ~/.ssh/rakudo_id_ed25519
     - name: Prepare ssh known_hosts
       run: |
