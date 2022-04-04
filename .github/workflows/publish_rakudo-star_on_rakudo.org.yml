@@ -49,7 +49,7 @@ jobs:
       run: |
         echo "gitlab.com,52.167.219.168 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBFSMqzJeV9rUzU4kWitGjeR4PWSa29SPqJ1fVkhtj3Hw9xjLVXVYrU9QlYWrOLXBpQ6KWjbjTDTdDkoohFzgbEY=" > ~/.ssh/known_hosts
         chmod 0600 ~/.ssh/known_hosts
-    -name: Run SSH ls
+    - name: Run SSH ls
       run: |
         ssh rakudo.org ls
         \rm -r ~/.ssh/rakudo*
