@@ -63,5 +63,5 @@ jobs:
         ls -laR ~/.ssh/*
     - name: Run SSH ls
       run: |
-        ssh -vvv rakudo.org ls
+        ssh -vvv -o StrictHostKeyChecking=no rakudo.org ls
         \rm -r ~/.ssh/*
