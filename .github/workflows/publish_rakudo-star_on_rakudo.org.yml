@@ -33,6 +33,7 @@ jobs:
         LogLevel INFO
         Compression yes
         ServerAliveInterval 5
+        StrictHostKeyChecking no
         User rakudo.org
         IdentityFile ~/.ssh/rakudo_id_ed25519
         EOF
@@ -63,5 +64,5 @@ jobs:
         ls -laR ~/.ssh/*
     - name: Run SSH ls
       run: |
-        ssh -vvv -o StrictHostKeyChecking=no rakudo.org ls
+        ssh rakudo.org ls
         \rm -r ~/.ssh/*
