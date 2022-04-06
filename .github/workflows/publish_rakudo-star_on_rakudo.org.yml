@@ -5,12 +5,13 @@ on:
   schedule: # Allways (one day) later then the publishing of the Rakudo-Star releases at GH, Tuesdays and Friday, at 23:55 UTC
     - cron:  '55 23 * * 2,5'
   workflow_dispatch:
-
+  
 jobs:
   upload_star_release:
     runs-on: ubuntu-latest
-
+    
     steps:
+    
     - name: Get GitHub's Rakudo Star and the Rakudo.org versions
       run: |
         RKD_STR_GH=$(curl -s https://raw.githubusercontent.com/AntonOks/star/master/RELEASE | awk -F "===>" '{print $1}')
@@ -22,27 +23,33 @@ jobs:
           exit
         fi
         echo $RKD_STR_GH $RKD_STR_ORG
+        
     - name: Prepare ssh config
       run: |
         if [[ ! -d ~/.ssh ]]; then mkdir -m 700 -p ~/.ssh; fi
         echo "${{ secrets.ACTIONS_RAKUDO_ORG_CONFIG }}" | base64 -d > ~/.ssh/config
         chmod 600 ~/.ssh/config
+        
     - name: Prepare ssh known_hosts
       run: |
         echo "${{ secrets.ACTIONS_RAKUDO_ORG_KNOWN_HOSTS }}" | base64 -d > ~/.ssh/known_hosts
         chmod 0600 ~/.ssh/known_hosts
+        
     - name: Prepare ssh public key file
       run: |
         echo "${{ secrets.ACTIONS_RAKUDO_ORG_ED25519_PUB }}" | base64 -d > ~/.ssh/rakudo_id_ed25519.pub
         chmod 644 ~/.ssh/rakudo_id_ed25519.pub
+        
     - name: Prepare ssh private key file
       run: |
         echo "${{ secrets.ACTIONS_RAKUDO_ORG_ED25519_PRIV }}" | base64 -d > ~/.ssh/rakudo_id_ed25519
         chmod 600 ~/.ssh/rakudo_id_ed25519
+        
     - name: List my stuff
       run: |
         echo "PWD is: $(pwd)"
         ls -laR ~/.ssh/*
+        
     - name: Run SSH ls
       run: |
         ssh rakudo.org ls -l
