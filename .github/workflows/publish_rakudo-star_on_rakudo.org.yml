@@ -13,8 +13,8 @@ jobs:
     steps:
     
     - name: Get GitHub's Rakudo Star and the Rakudo.org versions
-      run: |
       id: rkd_v_check
+      run: |
         RKD_STR_GH=$(curl -s https://raw.githubusercontent.com/AntonOks/star/master/RELEASE | awk -F "===>" '{print $1}')
         RKD_STR_ORG_TMP=$(curl -s https://rakudo.org/dl/star/ | jq -r '.[] | select((.latest==1) and (.url|test("-win-x86_64-")) and (.url|test("checksum")|not)) | .url')
         if [[ "$RKD_STR_ORG_TMP" =~ rakudo-star-([0-9]+.[0-9]+.?[0-9]?)-([0-9]+)- ]]; then
