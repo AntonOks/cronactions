@@ -66,7 +66,7 @@ jobs:
     - name: Get the Rakudo Star files
       run: |
         mkdir ~/output && cd ~/output
-        for FILE in $((curl -s https://api.github.com/repos/rakudo/star/releases/tags/${{steps.rkd_v_check.outputs.RKD_STR_VERSION}} | jq -r ".assets[] | .browser_download_url")); do
+        for FILE in `curl -s https://api.github.com/repos/rakudo/star/releases/tags/${{steps.rkd_v_check.outputs.RKD_STR_VERSION}} | jq -r ".assets[] | .browser_download_url"`; do
           echo "running curl -L $FILE"
           curl -L $FILE
         done
