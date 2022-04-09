@@ -58,6 +58,7 @@ jobs:
         chmod 600 ~/.ssh/rakudo_id_ed25519
         
     - name: List my SSH stuff
+      if: steps.ssh_config.outputs.config
       run: |
         echo "PWD is: $(pwd)"
         ls -laR ~/.ssh/*
