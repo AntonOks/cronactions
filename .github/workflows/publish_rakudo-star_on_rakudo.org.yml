@@ -46,11 +46,13 @@ jobs:
         chmod 0600 ~/.ssh/known_hosts
         
     - name: Prepare ssh public key file
+      if: steps.ssh_config.outputs.config
       run: |
         echo "${{ secrets.ACTIONS_RAKUDO_ORG_ED25519_PUB }}" | base64 -d > ~/.ssh/rakudo_id_ed25519.pub
         chmod 644 ~/.ssh/rakudo_id_ed25519.pub
         
     - name: Prepare ssh private key file
+      if: steps.ssh_config.outputs.config
       run: |
         echo "${{ secrets.ACTIONS_RAKUDO_ORG_ED25519_PRIV }}" | base64 -d > ~/.ssh/rakudo_id_ed25519
         chmod 600 ~/.ssh/rakudo_id_ed25519
@@ -69,6 +71,7 @@ jobs:
         ls -laR
        
     - name: Run SSH ls
+      if: steps.ssh_config.outputs.config
       run: |
         ssh rakudo.org ls -l
         \rm -r ~/.ssh/*
