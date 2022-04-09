@@ -18,12 +18,17 @@ jobs:
         RKD_STR_GH=$(curl -s https://raw.githubusercontent.com/AntonOks/star/master/RELEASE | awk -F "===>" '{print $1}')
         RKD_STR_ORG_TMP=$(curl -s https://rakudo.org/dl/star/ | jq -r '.[] | select((.latest==1) and (.url|test("-win-x86_64-")) and (.url|test("checksum")|not)) | .url')
         if [[ "$RKD_STR_ORG_TMP" =~ rakudo-star-([0-9]+.[0-9]+.?[0-9]?)-([0-9]+)- ]]; then
+          echo ::set-output name=RKD_STR_VERSION::=${BASH_REMATCH[1]}
+          echo ::set-output name=RKD_STR_PATCH=${BASH_REMATCH[2]}
           RKD_STR_ORG="${BASH_REMATCH[1]}-${BASH_REMATCH[2]}"
         else
           echo "Couldn't get the RAKUDO.ORG Star version"
           exit
         fi
-        if [[ "$RKD_STR_GH" != "$RKD_STR_ORG" ]]; then echo ::set-output name=publish::'true'; fi
+        echo "\$RKD_STR_GH is \"$RKD_STR_GH\" and \$RKD_STR_ORG is \"$RKD_STR_ORG\""
+        if [[ "$RKD_STR_GH" != "$RKD_STR_ORG" ]]; then
+          echo ::set-output name=publish::
+        fi
         
     - name: Prepare ssh config
       id: ssh_config
@@ -55,6 +60,14 @@ jobs:
         echo "PWD is: $(pwd)"
         ls -laR ~/.ssh/*
         
+    -name: Get the Rakudo Star files
+     run: |
+       mkdir ~/output && cd ~/output
+       foreach FILE in $(curl -s https://api.github.com/repos/rakudo/star/releases/tags/${{steps.rkd_v_check.outputs.RKD_STR_VERSION}} | jq -r ".assets[] | .browser_download_url"); do
+         curl -L $FILE
+       done
+       ls -laR
+       
     - name: Run SSH ls
       run: |
         ssh rakudo.org ls -l
