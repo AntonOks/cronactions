@@ -18,7 +18,7 @@ jobs:
         RKD_STR_GH=$(curl -s https://raw.githubusercontent.com/AntonOks/star/master/RELEASE | awk -F "===>" '{print $1}')
         RKD_STR_ORG_TMP=$(curl -s https://rakudo.org/dl/star/ | jq -r '.[] | select((.latest==1) and (.url|test("-win-x86_64-")) and (.url|test("checksum")|not)) | .url')
         if [[ "$RKD_STR_ORG_TMP" =~ rakudo-star-([0-9]+.[0-9]+.?[0-9]?)-([0-9]+)- ]]; then
-          echo ::set-output name=RKD_STR_VERSION::=${BASH_REMATCH[1]}
+          echo ::set-output name=RKD_STR_VERSION::${BASH_REMATCH[1]}
           echo ::set-output name=RKD_STR_PATCH=${BASH_REMATCH[2]}
           RKD_STR_ORG="${BASH_REMATCH[1]}-${BASH_REMATCH[2]}"
         else
