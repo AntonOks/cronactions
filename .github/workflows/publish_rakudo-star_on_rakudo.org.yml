@@ -77,6 +77,7 @@ jobs:
           if [[ ! "${BASH_REMATCH[4]}" ]]; then
             cp -p $RKD ${BASH_REMATCH[1]}${BASH_REMATCH[2]}-01-${BASH_REMATCH[3]}
           fi
+        done
         echo "AFTER renaming:"
         ls -laR
        
