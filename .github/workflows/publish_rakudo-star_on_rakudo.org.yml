@@ -73,9 +73,9 @@ jobs:
         echo "BEFORE renaming:"
         ls -laR
         for RKD in `ls -1`; do
-          [[ "$RKD" =~ ([a-zA-Z-]+)([0-9]+.[0-9]+\.?[0-9]?)-(.+)$ ]]
+          [[ "$RKD" =~ ([a-zA-Z-]+)([0-9]+.[0-9]+\.?[0-9]?)(.+)$ ]]
           if [[ ! "${BASH_REMATCH[4]}" ]]; then
-            cp -p $RKD ${BASH_REMATCH[1]}${BASH_REMATCH[2]}-01-${BASH_REMATCH[3]}
+            cp -p "$RKD" "${BASH_REMATCH[1]}${BASH_REMATCH[2]}-01${BASH_REMATCH[3]}"
           fi
         done
         echo "AFTER renaming:"
