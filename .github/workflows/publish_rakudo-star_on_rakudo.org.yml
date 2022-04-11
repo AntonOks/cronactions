@@ -68,8 +68,16 @@ jobs:
         mkdir ~/output && cd ~/output
         for FILE in `curl -s https://api.github.com/repos/rakudo/star/releases/tags/${{steps.rkd_v_check.outputs.RKD_STR_VERSION}} | jq -r ".assets[] | .browser_download_url"`; do
           echo "running curl -L $FILE"
-          curl -L $FILE -o $( basename $FILE )
+          curl -sL $FILE -o $( basename $FILE )
         done
+        echo "BEFORE renaming:"
+        ls -laR
+        for RKD in `ls -1`; do
+          "$RKD" =~ ([a-zA-Z-]+)([0-9]+.[0-9]+\.?[0-9]?)-(.+)$
+          if [[ ! "${BASH_REMATCH[4]}" ]]; then
+            cp -p $RKD ${BASH_REMATCH[1]}${BASH_REMATCH[2]}-01-${BASH_REMATCH[3]}
+          fi
+        echo "AFTER renaming:"
         ls -laR
        
     - name: Run SSH ls
