@@ -18,7 +18,7 @@ jobs:
     - name: Get GitHub's Rakudo Star and the Rakudo.org versions
       id: rkd_v_check
       run: |
-        RKD_STR_GH=$(curl -s https://raw.githubusercontent.com/rakudo/star/master/RELEASE | awk -F "===>" '{print $1}')
+        RKD_STR_GH=$(curl -s https://raw.githubusercontent.com/rakudo/star/master/RELEASE | awk -F " ===> " '{print $1}')
         if [[ ! "$RKD_STR_GH" =~ - ]]; then
           RKD_STR_GH="$RKD_STR_GH-$RKD_REVISION"
         fi
