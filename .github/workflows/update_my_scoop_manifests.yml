@@ -1,0 +1,30 @@
+name: Update my scoop manifests
+
+on:
+  schedule:
+    - cron:  '10 6-22 * * *' # my working and online hours ;)
+  workflow_dispatch:
+
+jobs:
+  update_manifests:
+    runs-on: windows-latest
+    
+    steps:
+    - name: Checkout my scoop-aoks repo
+      uses: actions/checkout@v3
+      with:
+        repository: AntonOks/scoop-aoks
+        path: scoop-aoks
+        token: ${{ secrets.ACTIONS_SECRET }}
+        
+    - name: Install SCOOP
+      run: Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')
+        
+    - name: AutoUpdate manifests
+      run: $GITHUB_WORKSPACE\scoop-aoks\bin\Update-AutoupdateManifests.ps1 -V
+      
+    - name: Add and commit changes
+      uses: EndBug/add-and-commit@v8
+      with:
+        message: "Updated the manifests at $(date)"
+        push: "true"
