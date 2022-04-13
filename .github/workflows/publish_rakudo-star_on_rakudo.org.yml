@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
   
 env:
-  RKD_REVISION: 01 # Default build revision if RKD_STR_GH below has only a VERSION and not a revision (say, something like 202203-01 is expected)
+  RKD_REVISION: "01" # Default build revision if RKD_STR_GH below has only a VERSION and not a revision (say, something like 202203-01 is expected)
   
 jobs:
   upload_star_release:
