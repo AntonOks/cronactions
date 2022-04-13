@@ -15,7 +15,7 @@ jobs:
       with:
         repository: AntonOks/scoop-aoks
         path: scoop-aoks
-        token: ${{ secrets.ACTIONS_SECRET }}
+        token: ${{ secrets.ACTIONS_RAKUDO_SYNC }}
         ref: ${{ github.head_ref }}
         fetch-depth: 0
         
