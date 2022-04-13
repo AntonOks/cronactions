@@ -20,7 +20,7 @@ jobs:
       run: |
         RKD_STR_GH=$(curl -s https://raw.githubusercontent.com/rakudo/star/master/RELEASE | awk -F "===>" '{print $1}')
         if [[ ! "$RKD_STR_GH" =~ - ]]; then
-          RKD_STR_GH=$RKD_STR_GH-$RKD_REVISION
+          RKD_STR_GH="$RKD_STR_GH-$RKD_REVISION"
         fi
         RKD_STR_ORG_TMP=$(curl -s https://rakudo.org/dl/star/ | jq -r '.[] | select((.latest==1) and (.url|test("-win-x86_64-")) and (.url|test("checksum")|not)) | .url')
         if [[ "$RKD_STR_ORG_TMP" =~ rakudo-star-([0-9]+.[0-9]+.?[0-9]?)-([0-9]+)- ]]; then
