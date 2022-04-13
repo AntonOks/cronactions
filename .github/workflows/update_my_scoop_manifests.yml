@@ -7,7 +7,7 @@ on:
 
 jobs:
   update_manifests:
-    runs-on: windows-latest
+    runs-on: windows-2019
     
     steps:
     - name: Checkout my scoop-aoks repo
@@ -16,6 +16,8 @@ jobs:
         repository: AntonOks/scoop-aoks
         path: scoop-aoks
         token: ${{ secrets.ACTIONS_SECRET }}
+        ref: ${{ github.head_ref }}
+        fetch-depth: 0
         
     - name: Install SCOOP
       run: Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')
