@@ -70,22 +70,23 @@ jobs:
         ls -laR ~/.ssh/*
         
     - name: Get the Rakudo Star files
+      if: steps.ssh_config.outputs.config
       run: |
         mkdir ~/output && cd ~/output
         for FILE in `curl -s https://api.github.com/repos/rakudo/star/releases/tags/${{steps.rkd_v_check.outputs.RKD_STR_VERSION}} | jq -r ".assets[] | .browser_download_url"`; do
           echo "running curl -L $FILE"
           curl -sL $FILE -o $( basename $FILE )
         done
-        echo "BEFORE renaming:"
-        ls -laR
+        ### echo "BEFORE renaming:"
+        ### ls -laR
         for RKD in `ls -1`; do
           [[ "$RKD" =~ ([a-zA-Z-]+)([0-9]+\.[0-9]+\.?[0-9]?)([-\.]{1})(.+)$ ]]
           if [[ ! "${BASH_REMATCH[5]}" ]]; then
             mv "$RKD" "${BASH_REMATCH[1]}${BASH_REMATCH[2]}-${{steps.rkd_v_check.outputs.RKD_STR_PATCH}}${BASH_REMATCH[3]}${BASH_REMATCH[4]}"
           fi
         done
-        echo "AFTER renaming:"
-        ls -laR
+        ### echo "AFTER renaming:"
+        ### ls -laR
        
     - name: Run SSH ls
       if: steps.ssh_config.outputs.config
