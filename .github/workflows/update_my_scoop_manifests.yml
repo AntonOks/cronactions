@@ -28,7 +28,7 @@ jobs:
     - name: AutoUpdate manifests
       run: |
         ls
-        & $GITHUB_WORKSPACE\scoop-aoks\bin\Update-AutoupdateManifests.ps1 -V
+        & scoop-aoks\bin\Update-AutoupdateManifests.ps1 -V
       
     - name: Add and commit changes
       uses: EndBug/add-and-commit@v8
