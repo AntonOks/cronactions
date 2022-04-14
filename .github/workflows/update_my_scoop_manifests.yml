@@ -21,8 +21,11 @@ jobs:
         
     - name: Install SCOOP
       run: |
+        Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
         iwr -useb get.scoop.sh -outfile 'install.ps1'
         .\install.ps1 -RunAsAdmin
+        & scoop help
+        & scoop bucket add extras
       # run: Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')
         
     - name: AutoUpdate manifests
