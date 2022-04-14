@@ -9,6 +9,10 @@ jobs:
   update_manifests:
     runs-on: windows-2019
     
+    env:
+      SCOOP: $env:TEMP
+      SCOOP_GLOBAL: $env:TEMP
+      
     steps:
     - name: Checkout my scoop-aoks repo
       uses: actions/checkout@v3
