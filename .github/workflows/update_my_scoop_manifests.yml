@@ -30,7 +30,8 @@ jobs:
         
     - name: AutoUpdate manifests
       run: |
-        ls
+        ls -recursive scoop-aoks
+        & scoop help
         & scoop-aoks\bin\Update-AutoupdateManifests.ps1 -V
       
     - name: Add and commit changes
