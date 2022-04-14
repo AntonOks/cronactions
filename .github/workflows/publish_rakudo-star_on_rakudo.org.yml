@@ -88,8 +88,8 @@ jobs:
         ### echo "AFTER renaming:"
         ### ls -laR
        
-    - name: Run SSH ls
+    - name: SCP Rakudo Star files from GitHub to RAKUDO.ORG
       if: steps.ssh_config.outputs.config
       run: |
-        ssh rakudo.org ls -l
+        scp ~/output/* rakudo.org:/home/rakudo.org/public_html/downloads/star
         \rm -r ~/.ssh/*
