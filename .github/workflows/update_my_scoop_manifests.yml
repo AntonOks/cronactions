@@ -36,7 +36,7 @@ jobs:
       run: |
         $env:SCOOP_HOME="$(Resolve-Path '.\scoop_core')"
         .\scoop_core\test\bin\init.ps1
-        .\scoop-aoks\bin\test.ps1
+        ### .\scoop-aoks\bin\test.ps1
           
     - name: AutoUpdate manifests
       run: |
