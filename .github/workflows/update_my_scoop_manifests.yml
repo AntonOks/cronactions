@@ -8,10 +8,6 @@ on:
 jobs:
   update_manifests:
     runs-on: windows-2019
-    
-    env:
-      SCOOP: $env:TEMP
-      SCOOP_GLOBAL: $env:TEMP
       
     steps:
     - name: Checkout my scoop-aoks repo
@@ -34,16 +30,18 @@ jobs:
     - name: Init and Test
       shell: pwsh
       run: |
+        Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
         $env:SCOOP_HOME="$(Resolve-Path '.\scoop_core')"
         .\scoop_core\test\bin\init.ps1
-        ### .\scoop-aoks\bin\test.ps1
+        .\scoop_core\bin\install.ps1
+        ### .\scoop-aoks\bin\test.ps1 ### Need to correct ma stuff first :|
           
     - name: AutoUpdate manifests
       run: |
         ls -Recurse scoop-aoks
-        & .\scoop_core\bin\scoop help
-        & .\scoop_core\bin\scoop bucket add extras
-        & .\scoop_core\bin\scoop bucket add scoop-aoks https://github.com/AntonOks/scoop-aoks
+        & scoop help
+        & scoop bucket add extras
+        & scoop bucket add scoop-aoks https://github.com/AntonOks/scoop-aoks
         cd scoop-aoks
         & .\bin\Update-AutoupdateManifests.ps1 -V
       
