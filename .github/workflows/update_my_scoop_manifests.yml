@@ -31,11 +31,11 @@ jobs:
       shell: pwsh
       run: |
         Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-        $env:SCOOP_HOME="$(Resolve-Path '.\scoop_core')"
-        $env:PATH += ";$env:SCOOP_HOME\bin"
+        ### $env:SCOOP_HOME="$(Resolve-Path '.\scoop_core')"
+        ### $env:PATH += ";$env:SCOOP_HOME\bin"
         .\scoop_core\lib\core.ps1
         .\scoop_core\test\bin\init.ps1
-        ### .\scoop_core\bin\install.ps1
+        .\scoop_core\bin\install.ps1
         ### .\scoop-aoks\bin\test.ps1 ### Need to correct ma stuff first :|
         scoop help
         
