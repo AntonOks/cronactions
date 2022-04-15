@@ -37,10 +37,11 @@ jobs:
         .\scoop_core\test\bin\init.ps1
         ### .\scoop_core\bin\install.ps1
         ### .\scoop-aoks\bin\test.ps1 ### Need to correct ma stuff first :|
-          
+        scoop help
+        
     - name: AutoUpdate manifests
       run: |
-        ls -Recurse scoop-aoks
+        ls scoop-aoks
         & scoop help
         & scoop bucket add extras
         & scoop bucket add scoop-aoks https://github.com/AntonOks/scoop-aoks
