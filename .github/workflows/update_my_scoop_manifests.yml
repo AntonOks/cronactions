@@ -41,9 +41,9 @@ jobs:
     - name: AutoUpdate manifests
       run: |
         ls -Recurse scoop-aoks
-        & scoop help
-        & scoop bucket add extras
-        & scoop bucket add scoop-aoks https://github.com/AntonOks/scoop-aoks
+        & .\scoop_core\bin\scoop help
+        & .\scoop_core\bin\scoop bucket add extras
+        & .\scoop_core\bin\scoop bucket add scoop-aoks https://github.com/AntonOks/scoop-aoks
         cd scoop-aoks
         & .\bin\Update-AutoupdateManifests.ps1 -V
       
