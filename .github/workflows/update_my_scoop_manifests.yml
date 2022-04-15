@@ -23,20 +23,29 @@ jobs:
         ref: ${{ github.head_ref }}
         fetch-depth: 0
         
-    - name: Install SCOOP
-      run: |
-        Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-        iwr -useb get.scoop.sh -outfile 'install.ps1'
-        .\install.ps1 -RunAsAdmin
-        & scoop help
-        & scoop bucket add extras
-      # run: Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')
+    - name: Checkout Scoop
+      uses: actions/checkout@v3
+      with:
+        repository: ScoopInstaller/Scoop
+        path: 'scoop_core'
+        token: ${{ secrets.GITHUB_TOKEN }}
+        fetch-depth: 0
         
+    - name: Init and Test
+      shell: pwsh
+      run: |
+        $env:SCOOP_HOME="$(Resolve-Path '.\scoop_core')"
+        .\scoop_core\test\bin\init.ps1
+        .\scoop-aoks\bin\test.ps1
+          
     - name: AutoUpdate manifests
       run: |
         ls -recursive scoop-aoks
         & scoop help
-        & scoop-aoks\bin\Update-AutoupdateManifests.ps1 -V
+        & scoop bucket add extras
+        & scoop bucket add scoop-aoks https://github.com/AntonOks/scoop-aoks
+        cd scoop-aoks
+        & .\bin\Update-AutoupdateManifests.ps1 -V
       
     - name: Add and commit changes
       uses: EndBug/add-and-commit@v8
