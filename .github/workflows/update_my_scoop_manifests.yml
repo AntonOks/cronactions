@@ -1,8 +1,8 @@
 name: Update my scoop manifests
 
 on:
-  # schedule:
-  #   - cron:  '10 6-22 * * *' # my working and online hours ;)
+  schedule:
+    - cron:  '10 6-22 * * *' # my working and online hours ;)
   workflow_dispatch:
 
 jobs:
