@@ -17,7 +17,7 @@ jobs:
         path: scoop-aoks
         token: ${{ secrets.GITHUB_TOKEN }}
         ref: ${{ github.head_ref }}
-        fetch-depth: 0
+        ### fetch-depth: 0
         
     - name: Checkout Scoop
       uses: actions/checkout@v3
@@ -25,7 +25,7 @@ jobs:
         repository: ScoopInstaller/Scoop
         path: 'scoop_core'
         token: ${{ secrets.GITHUB_TOKEN }}
-        fetch-depth: 0
+        ### fetch-depth: 0
         
     - name: Init and Test... and now also Update my bucket
       shell: pwsh
@@ -44,7 +44,7 @@ jobs:
         .\scoop_core\test\bin\init.ps1
         echo "Running `".\scoop_core\bin\install.ps1`""
         .\scoop_core\bin\install.ps1
-        ### .\scoop-aoks\bin\test.ps1 ### Need to correct ma stuff first :|
+        ### .\scoop-aoks\bin\test.ps1 ### Need to correct my stuff first :|
         echo "Running `"scoop help`""
         scoop help
         scoop bucket add extras
@@ -52,8 +52,9 @@ jobs:
         cd scoop-aoks
         & .\bin\Update-AutoupdateManifests.ps1 -V
       
-    - name: Add and commit changes
-      uses: EndBug/add-and-commit@v8
+    - name: Add finaly commit changes
+      uses: EndBug/add-and-commit@v9
       with:
         message: "Updated the manifests at $(date)"
+        cwd: "scoop-aoks"
         push: "true"
