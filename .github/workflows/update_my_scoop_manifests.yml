@@ -31,7 +31,7 @@ jobs:
       shell: pwsh
       run: |
         Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-        ### $env:I_AM_A_GITHUB_ACTION=$True
+        $env:I_AM_A_GITHUB_ACTION=$True
         $env:SCOOP_HOME="$(Resolve-Path '.\scoop_core')"
         ### $env:PATH += ";$env:SCOOP_HOME\bin"
         
@@ -55,7 +55,7 @@ jobs:
     - name: Push changes
       uses: ad-m/github-push-action@master
       with:
-        directory: scoop-aoks
+        directory: ".\scoop-aoks"
         github_token: ${{ secrets.GITHUB_TOKEN }}
         branch: ${{ github.ref }}
       
