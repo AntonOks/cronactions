@@ -45,7 +45,7 @@ jobs:
         echo "Running `".\scoop_core\bin\install.ps1`""
         .\scoop_core\bin\install.ps1
         ### .\scoop-aoks\bin\test.ps1 ### Need to correct my stuff first :|
-        echo "Adding \"extras\" and \"scoop-aoks\" buckets..."
+        echo "Adding `"extras`" and `"scoop-aoks`" buckets..."
         scoop bucket add extras
         scoop bucket add scoop-aoks https://github.com/AntonOks/scoop-aoks
         cd scoop-aoks
@@ -55,6 +55,7 @@ jobs:
     - name: Push changes
       uses: ad-m/github-push-action@master
       with:
+        directory: scoop-aoks
         github_token: ${{ secrets.GITHUB_TOKEN }}
         branch: ${{ github.ref }}
       
