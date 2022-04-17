@@ -45,12 +45,12 @@ jobs:
         echo "Running `".\scoop_core\bin\install.ps1`""
         .\scoop_core\bin\install.ps1
         ### .\scoop-aoks\bin\test.ps1 ### Need to correct my stuff first :|
-        echo "Running `"scoop help`""
-        scoop help
+        echo "Adding \"extras\" and \"scoop-aoks\" buckets..."
         scoop bucket add extras
         scoop bucket add scoop-aoks https://github.com/AntonOks/scoop-aoks
         cd scoop-aoks
         & .\bin\Update-AutoupdateManifests.ps1 -V
+        $(date) > AUTOUPDATE
       
     - name: Add finaly commit changes
       uses: EndBug/add-and-commit@v9
