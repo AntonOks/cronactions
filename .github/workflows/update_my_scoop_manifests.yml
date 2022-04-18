@@ -74,7 +74,7 @@ jobs:
         echo "   INFO - Try gh tool to authenticate "
         echo ${{ secrets.ACTIONS_SECRET }} > mytoken.txt
         $GH_AUTH = "gh auth login -p https --with-token"
-        Invoke-Expression "$GH_AUTH -i < mytoken.txt"
+        Invoke-Expression "$GH_AUTH -i mytoken.txt"
         \rm -f mytoken.txt
         gh auth status
         
