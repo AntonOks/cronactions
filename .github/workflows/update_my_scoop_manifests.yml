@@ -69,7 +69,7 @@ jobs:
         git remote -v
         
         echo "   INFO - changing the remote origin to use my TOKEN"
-        git remote set-url origin https://x-access-token:${{ secrets.ACTIONS_SECRET }}@github.com/AntonOks/scoop-aoks
+        git remote set-url origin https://token:${{ secrets.ACTIONS_SECRET }}@github.com/AntonOks/scoop-aoks.git
         
         echo "   INFO - run the AutoUpdate script"
         & .\bin\Update-AutoupdateManifests.ps1 -V
