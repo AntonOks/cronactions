@@ -71,6 +71,11 @@ jobs:
         ### echo "   INFO - changing the remote origin to use my TOKEN"
         ### git remote set-url origin https://token:${{ secrets.ACTIONS_SECRET }}@github.com/AntonOks/scoop-aoks.git
         
+        echo "   INFO - Try gh tool to authenticate "
+        echo ${{ secrets.ACTIONS_SECRET }} > mytoken.txt
+        gh auth login -p https --with-token < mytoken.txt
+        \rm -f mytoken.txt
+        
         echo "   INFO - run the AutoUpdate script"
         & .\bin\Update-AutoupdateManifests.ps1 -V
         
