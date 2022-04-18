@@ -75,6 +75,7 @@ jobs:
         echo ${{ secrets.ACTIONS_SECRET }} > mytoken.txt
         gh auth login -p https --with-token < mytoken.txt
         \rm -f mytoken.txt
+        gh auth status
         
         echo "   INFO - run the AutoUpdate script"
         & .\bin\Update-AutoupdateManifests.ps1 -V
