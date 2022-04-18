@@ -44,8 +44,8 @@ jobs:
         echo "   INFO - Running `"git config -l`""
         git config -l
         
-        ### git config --global user.email "github.bot@example.github.com"
-        ### git config --global user.name "Github Bot"
+        git config --global user.email "github.bot@example.github.com"
+        git config --global user.name "Github Bot"
         
         echo "   INFO - Running `".\scoop_core\lib\core.ps1`""
         .\scoop_core\lib\core.ps1
