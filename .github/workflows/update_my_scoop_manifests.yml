@@ -4,6 +4,7 @@ on:
   ### schedule:
   ###  - cron:  '10 6-22 * * *' # my working and online hours ;)
   workflow_dispatch:
+  pull_request_target:
 
 jobs:
   update_manifests:
@@ -35,29 +36,44 @@ jobs:
       shell: pwsh
       run: |
         Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-        $env:I_AM_A_GITHUB_ACTION=$True
+        
+        ### $env:I_AM_A_GITHUB_ACTION=$True
         $env:SCOOP_HOME="$(Resolve-Path '.\scoop_core')"
         ### $env:PATH += ";$env:SCOOP_HOME\bin"
+        
+        echo "   INFO - Running `"git config -l`""
+        git config -l
         
         ### git config --global user.email "github.bot@example.github.com"
         ### git config --global user.name "Github Bot"
         
         echo "   INFO - Running `".\scoop_core\lib\core.ps1`""
         .\scoop_core\lib\core.ps1
+        
         echo "   INFO - Running `".\scoop_core\test\bin\init.ps1`""
         .\scoop_core\test\bin\init.ps1
+        
         echo "   INFO - Running `".\scoop_core\bin\install.ps1`""
         .\scoop_core\bin\install.ps1
+        
         ### .\scoop-aoks\bin\test.ps1 ### Need to correct my stuff first :|
+        
         echo "   INFO - Adding `"extras`" and `"scoop-aoks`" buckets..."
         scoop bucket add extras
         scoop bucket add scoop-aoks https://github.com/AntonOks/scoop-aoks
+        
         echo "   INFO - changing into the scoop-aoks directory"
         cd scoop-aoks
+        
         echo "   INFO - showing the remote repos"
         git remote -v
+        
+        echo "   INFO - changing the remote origin to use my TOKEN"
+        git remote set-url origin https://x-access-token:${{ secrets.ACTIONS_SECRET }}@github.com/AntonOks/scoop-aoks
+        
         echo "   INFO - run the AutoUpdate script"
         & .\bin\Update-AutoupdateManifests.ps1 -V
+        
         echo "   INFO - save the date in the AUTOUPDATE file"
         $(date) > AUTOUPDATE
         
@@ -69,9 +85,9 @@ jobs:
     ###     github_token: ${{ secrets.GITHUB_TOKEN }}
     ###     ### branch: ${{ github.ref }}
       
-    - name: Add finaly commit changes
-      uses: EndBug/add-and-commit@v9
-      with:
-         message: "Updated the manifests at $(date)"
-         cwd: '.\scoop-aoks'
-         push: "true"
+    ### - name: Add finaly commit changes
+    ###   uses: EndBug/add-and-commit@v9
+    ###   with:
+    ###      message: "Updated the manifests at $(date)"
+    ###      cwd: '.\scoop-aoks'
+    ###      push: "true"
