@@ -8,6 +8,8 @@ on:
 jobs:
   update_manifests:
     runs-on: windows-2019
+    
+    permissions: write-all
       
     steps:
     - name: Checkout my scoop-aoks repo
