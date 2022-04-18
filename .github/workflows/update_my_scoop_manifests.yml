@@ -74,8 +74,8 @@ jobs:
         echo "   INFO - Try gh tool to authenticate "
         echo ${{ secrets.ACTIONS_SECRET }} > mytoken.txt
         $GH_AUTH = "gh auth login -p https --with-token"
-        Invoke-Expression "$GH_AUTH -i mytoken.txt"
-        \rm -f mytoken.txt
+        Start-Process "gh.exe" "auth login -p https --with-token" -RedirectStandardInput ".\mytoken.txt" -NoNewWindow -Wait
+        Remove-Item -Force mytoken.txt
         gh auth status
         
         echo "   INFO - run the AutoUpdate script"
