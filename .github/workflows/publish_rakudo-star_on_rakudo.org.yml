@@ -91,5 +91,7 @@ jobs:
     - name: SCP Rakudo Star files from GitHub to RAKUDO.ORG
       if: steps.ssh_config.outputs.config
       run: |
+        pwd
+        ls -laR
         scp ~/output/* rakudo.org:/home/rakudo.org/public_html/downloads/star
         \rm -r ~/.ssh/*
