@@ -20,12 +20,13 @@ jobs:
       run: |
         RKD_STR_GH=$(curl -s https://raw.githubusercontent.com/rakudo/star/master/RELEASE | awk -F " ===> " '{print $1}')
         if [[ ! "$RKD_STR_GH" =~ - ]]; then
+          echo ::set-output name=RKD_STR_GH_VERSION::$RKD_STR_GH
           RKD_STR_GH="$RKD_STR_GH-$RKD_REVISION"
         fi
         RKD_STR_ORG_TMP=$(curl -s https://rakudo.org/dl/star/ | jq -r '.[] | select((.latest==1) and (.url|test("-win-x86_64-")) and (.url|test("checksum")|not)) | .url')
         if [[ "$RKD_STR_ORG_TMP" =~ rakudo-star-([0-9]+.[0-9]+.?[0-9]?)-([0-9]+)- ]]; then
-          echo ::set-output name=RKD_STR_VERSION::${BASH_REMATCH[1]}
-          echo ::set-output name=RKD_STR_PATCH::${BASH_REMATCH[2]}
+          echo ::set-output name=RKD_STR_ORG_VERSION::${BASH_REMATCH[1]}
+          echo ::set-output name=RKD_STR_ORG_PATCH::${BASH_REMATCH[2]}
           RKD_STR_ORG="${BASH_REMATCH[1]}-${BASH_REMATCH[2]}"
         else
           echo "Couldn't get the RAKUDO.ORG Star version"
@@ -73,16 +74,16 @@ jobs:
       if: steps.ssh_config.outputs.config
       run: |
         mkdir ~/output && cd ~/output && pwd
-        for FILE in `curl -s https://api.github.com/repos/rakudo/star/releases/tags/${{steps.rkd_v_check.outputs.RKD_STR_VERSION}} | jq -r ".assets[] | .browser_download_url"`; do
+        for FILE in `curl -s https://api.github.com/repos/rakudo/star/releases/tags/${{steps.rkd_v_check.outputs.RKD_STR_GH_VERSION}} | jq -r ".assets[] | .browser_download_url"`; do
           ### echo "running curl -L $FILE"
           curl -sL $FILE -o $( basename $FILE )
         done
-        ### echo "BEFORE renaming:"
-        ### ls -laR
+        echo "BEFORE renaming:"
+        ls -laR
         for RKD in `ls -1`; do
           [[ "$RKD" =~ ([a-zA-Z-]+)([0-9]+\.[0-9]+\.?[0-9]?)([-\.]{1})(.+)$ ]]
           if [[ ! "${BASH_REMATCH[5]}" ]]; then
-            mv "$RKD" "${BASH_REMATCH[1]}${BASH_REMATCH[2]}-${{steps.rkd_v_check.outputs.RKD_STR_PATCH}}${BASH_REMATCH[3]}${BASH_REMATCH[4]}"
+            mv "$RKD" "${BASH_REMATCH[1]}${BASH_REMATCH[2]}-${{steps.rkd_v_check.outputs.RKD_STR_ORG_PATCH}}${BASH_REMATCH[3]}${BASH_REMATCH[4]}"
           fi
         done
         echo "AFTER renaming:"
