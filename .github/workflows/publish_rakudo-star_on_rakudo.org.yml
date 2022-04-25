@@ -72,7 +72,7 @@ jobs:
     - name: Get the Rakudo Star files
       if: steps.ssh_config.outputs.config
       run: |
-        mkdir ~/output && cd ~/output
+        mkdir ~/output && cd ~/output && pwd
         for FILE in `curl -s https://api.github.com/repos/rakudo/star/releases/tags/${{steps.rkd_v_check.outputs.RKD_STR_VERSION}} | jq -r ".assets[] | .browser_download_url"`; do
           ### echo "running curl -L $FILE"
           curl -sL $FILE -o $( basename $FILE )
@@ -85,8 +85,9 @@ jobs:
             mv "$RKD" "${BASH_REMATCH[1]}${BASH_REMATCH[2]}-${{steps.rkd_v_check.outputs.RKD_STR_PATCH}}${BASH_REMATCH[3]}${BASH_REMATCH[4]}"
           fi
         done
-        ### echo "AFTER renaming:"
-        ### ls -laR
+        echo "AFTER renaming:"
+        pwd
+        ls -laR
        
     - name: SCP Rakudo Star files from GitHub to RAKUDO.ORG
       if: steps.ssh_config.outputs.config
