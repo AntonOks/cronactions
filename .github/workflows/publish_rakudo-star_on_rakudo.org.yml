@@ -94,5 +94,6 @@ jobs:
       run: |
         pwd
         ls -laR
+        cd ~/output && pwd && ls -laR && ls -la ~/output/*
         scp ~/output/* rakudo.org:/home/rakudo.org/public_html/downloads/star
         \rm -r ~/.ssh/*
