@@ -11,11 +11,13 @@ jobs:
     steps:
     - name: Check the latest Rakudo release version
       id: rakudo-release
-      shell: bash
+      # shell: bash
       run: |
         echo ::set-output name=release::$(curl -v https://github.com/rakudo/rakudo/releases/latest 2>&1 | grep 'Location: ' | grep -Po "(\d+\.\d+)(\\.[0-9]+)?")
-        rakudo_release=$(curl -v https://github.com/rakudo/rakudo/releases/latest 2>&1 | grep "Location: " | grep -Po "(\d+\.\d+)(\\.[0-9]+)?")
-        echo $rakudo_release
+        bash {
+          rakudo_release=$(curl -v https://github.com/rakudo/rakudo/releases/latest 2>&1 | grep "Location: " | grep -Po "(\d+\.\d+)(\\.[0-9]+)?")
+          echo $rakudo_release
+        }
 
     - name: Check the latest Rakudo Star release version
       id: star-release
