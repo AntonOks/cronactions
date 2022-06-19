@@ -24,7 +24,7 @@ jobs:
         echo ::set-output name=release::$(curl -v https://github.com/rakudo/star/releases/latest 2>&1 | grep 'Location: ' | grep -Po "(\d+\.\d+)(\\.[0-9]+)?")
 
     - name: Show the found Rakudo releases
-    shell: bash
+      shell: bash
       run: |
         echo "Rakudo latest is: ${{ steps.rakudo-release.outputs.release }}"
         echo "Rakudo Star latest is: ${{ steps.star-release.outputs.release }}"
