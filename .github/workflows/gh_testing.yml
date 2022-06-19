@@ -14,4 +14,4 @@ jobs:
       id: rakudo-release
       # shell: bash
       run: |
-        rakudo_release=`curl -v --stderr - https://github.com/rakudo/rakudo/releases/latest | grep 'Location: ' | grep -Po "(\d+\.\d+)(\\.[0-9]+)?"`
+        curl -v --stderr - https://github.com/rakudo/rakudo/releases/latest
