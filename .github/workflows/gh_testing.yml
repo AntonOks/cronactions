@@ -11,6 +11,7 @@ jobs:
     steps:
     - name: Check the latest Rakudo release version
       id: rakudo-release
+      shell: bash
       run: |
         echo ::set-output name=release::$(curl -v https://github.com/rakudo/rakudo/releases/latest 2>&1 | grep 'Location: ' | grep -Po "(\d+\.\d+)(\\.[0-9]+)?")
         rakudo_release=$(curl -v https://github.com/rakudo/rakudo/releases/latest 2>&1 | grep "Location: " | grep -Po "(\d+\.\d+)(\\.[0-9]+)?")
@@ -18,10 +19,12 @@ jobs:
 
     - name: Check the latest Rakudo Star release version
       id: star-release
+      shell: bash
       run: |
         echo ::set-output name=release::$(curl -v https://github.com/rakudo/star/releases/latest 2>&1 | grep 'Location: ' | grep -Po "(\d+\.\d+)(\\.[0-9]+)?")
 
     - name: Show the found Rakudo releases
+    shell: bash
       run: |
         echo "Rakudo latest is: ${{ steps.rakudo-release.outputs.release }}"
         echo "Rakudo Star latest is: ${{ steps.star-release.outputs.release }}"
