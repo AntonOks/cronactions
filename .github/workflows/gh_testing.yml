@@ -3,6 +3,7 @@ name: Test this and that on GitHub Actions
 on:
 
   workflow_dispatch:
+  push:
 
 jobs:
   test_run:
@@ -14,20 +15,3 @@ jobs:
       # shell: bash
       run: |
         rakudo_release=$(curl -v --stderr - https://github.com/rakudo/rakudo/releases/latest | grep 'Location: ' | grep -Po "(\d+\.\d+)(\\.[0-9]+)?")
-
-    - name: Check the latest Rakudo Star release version
-      id: star-release
-      shell: bash
-      run: |
-        echo ::set-output name=release::$(curl -v https://github.com/rakudo/star/releases/latest 2>&1 | grep 'Location: ' | grep -Po "(\d+\.\d+)(\\.[0-9]+)?")
-
-    - name: Show the found Rakudo releases
-      shell: bash
-      run: |
-        echo "Rakudo latest is: ${{ steps.rakudo-release.outputs.release }}"
-        echo "Rakudo Star latest is: ${{ steps.star-release.outputs.release }}"
-
-    - name: Compare the latest Rakudo and Rakudo Star releases
-      id: update-star-release
-      if: (steps.rakudo-release.outputs.release && steps.star-release.outputs.release && (steps.rakudo-release.outputs.release != steps.star-release.outputs.release))
-      run: echo ::set-output name=update_star_release::'true'
