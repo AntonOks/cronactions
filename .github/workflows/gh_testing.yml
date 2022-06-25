@@ -10,9 +10,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Setup gitsign
+      uses: chainguard-dev/actions/setup-gitsign@main
+
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
     - name: Check the latest Rakudo release version
       id: rakudo-release
       # shell: bash
       run: |
         rakudo_release=$(curl -v --stderr - https://github.com/rakudo/rakudo/releases/latest | grep -i 'location: ' | grep -Po "(\d+\.\d+)(\\.[0-9]+)?")
         echo $rakudo_release
+        echo $rakudo_release > TEMP
+
+    - name: Add and commit
+      uses: EndBug/add-and-commit@v9
+      with:
+        message: "Just a try-n-error"
+        tag: "$(date)"
+        push: "true"
